@@ -1,6 +1,6 @@
 
 
-from .interfaces import PixelMap
+from .pixelmap import PixelMap
 
 
 class Resizable(PixelMap):
@@ -9,7 +9,7 @@ class Resizable(PixelMap):
   """
   
   def resize(self, newsize=None, newbpp=None, newcpp=None
-      , offset=(0,0), startbpp=0, startcpp=0)):
+      , offset=(0,0), startbpp=0, startcpp=0):
     """
     resize the bitmap.
     

@@ -1,5 +1,5 @@
 
-from .interfaces import Image
+from .image import Image
 
 
 class Drawable(Image):

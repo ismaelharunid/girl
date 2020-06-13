@@ -1,8 +1,9 @@
 
-from .interfaces import Image, Writable
+from .pixelmap import PixelMap
+from .writable import Writable
 
 
-class Tile(BitMap, Writable):
+class Tile(Writable, PixelMap):
   """
   girl.Tile class interface.
   """

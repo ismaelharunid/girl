@@ -1,5 +1,5 @@
 
-from .interfaces import Tileable
+from .tileable import Tileable
 
 
 class Renderable(Tileable):
@@ -16,4 +16,5 @@ class Renderable(Tileable):
     
     bitmap(BitMap):   that target bitmap to render to, it must be compatible.
     raise NotImplementedError("Please implement the render_to magic method")
-
+    """
+    pass

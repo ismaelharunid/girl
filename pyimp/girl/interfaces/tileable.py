@@ -1,5 +1,6 @@
 
-from .interfaces import Drawable, Tile
+from .drawable import Drawable
+from .tile import Tile
 
 
 class Tileable(Drawable):

@@ -1,6 +1,6 @@
 
 
-from .interfaces import PixelMap
+from .pixelmap import PixelMap
 
 
 class Writable(PixelMap):
