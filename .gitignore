@@ -1,6 +1,24 @@
 # Prerequisites
 *.d
 
+# Distribution / packaging
+archive/
+develop-eggs/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+*.geany
+*.pyc
+MANIFEST
+
 # Compiled Object files
 *.slo
 *.lo
