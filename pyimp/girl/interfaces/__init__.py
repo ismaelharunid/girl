@@ -1,4 +1,5 @@
 
+from .area import Area
 from .pixelmap import PixelMap
 from .image import Image
 from .writable import Writable
