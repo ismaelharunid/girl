@@ -1,7 +1,7 @@
 
 from girl.common import *
 from girl.typehelpers import *
-
+from math import sqrt
 
 class Vertice(TypedList):
   
@@ -32,7 +32,8 @@ class Vertice(TypedList):
 
   def matmul(self, mat):
     ca, ra = self.n_columns, self.n_rows
-    cb = mat.n_columns if hasattr(mat, 'n_columns') else ca
+    cb = mat.n_columns if hasattr(mat, 'n_columns') else \
+        int(round(sqrt(len(mat))))
     rb = len(mat) / cb
     return self.__class__((sum(self[i+k*ca]*mat[j+i*cb] for i in range(ca)) \
         for k in range(ra) for j in range(cb)), n_columns=cb)
