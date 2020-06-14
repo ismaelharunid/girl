@@ -11,6 +11,36 @@ is2numtuple = lambda t: isinstance(t, tuple) and len(t) == 2 \
 isntuple = lambda t,n,c=None: isinstance(t, tuple) and len(t) == n \
     and (c is None or all(isinstance(i, c) for i in t))
 
+def zrange(count, z=0):
+  while count > 0:
+    count -= 1
+    yield z
+
+MAXDATAREPRSIZE = 80*5
+def reprdata(data, maxitems=MAXDATAREPRSIZE, rowsize=6, n_columns=None
+    , itemrepr=repr, linesize=None):
+  l_data = len(data)
+  n = 1 if n_columns is None else n_columns
+  if l_data > maxitems:
+    hmi = min(l_data, maxitems) // 2
+    i1, frag = divmod(hmi, rowsize)
+    i1 = i1 * rowsize + max(frag, rowsize // 2) - 1
+    i2 = l_data - (maxitems-i1) + 2
+    i3 = (i2 // rowsize + 1) * rowsize
+    #print(l_data, i1, i2, i3)
+    #('' if i%n or not i else ' ')
+    out = '\n      '.join(','.join(('' if i%n or not i else ' ')+itemrepr(data[i]) \
+        for i in range(j,min(i1,j+rowsize),1)) \
+        for j in range(0,i1,rowsize)) + ', ...... \n......'
+    #out += ','.join(itemrepr(i) for i in data[i2:i3]) + '\n      '
+    out += '\n      '.join(','.join(('' if i%n or not i else ' ')+itemrepr(data[i]) \
+        for i in range(j,min(l_data,j+rowsize),1)) \
+        for j in range(i2,l_data,rowsize))
+  else:
+    out = ', '.join(itemrepr(i) for i in data)
+  return '[' + out + ']'
+
+
 
 import operator
 
@@ -49,37 +79,64 @@ SequenceMathOps = type('SequenceMathOps', (Sequence,), SEQUENCEMATHOPS)
 
 from array import array as Array
 D2ATYPES = \
-    { float:  'f'
-    , int:    'l'
+    { float:    'f'
+    , int:      'l'
+    , str:      'B'
+    , "char":   'b'
+    , "uchar":  'B'
+    , "int":    'l'
+    , "uint":   'L'
+    , "float":  'f'
+    , "double": 'd'
+    , "int8":   'b'
+    , "uint8":  'B'
+    , "int16":  'h'
+    , "uint16": 'H'
+    , "int32":  'l'
+    , "uint32": 'L'
+    , "int64":  'q'
+    , "uint64": 'Q'
     }
 
 class TypedList(Array, Sequence):
   
-  _dtype  = None
+  _dtype    = None
+  _dlength  = None
   
   @property
   def dtype(self):
     return self._dtype
   
+  @property
+  def dlength(self):
+    return self._dlength
+  
   def __new__(cls, initializer, dtype=None):
-    values = initializer
+    values, dlength = initializer, None
     if dtype is None:
-      if cls._dtype is None:
+      dtype = cls._dtype
+    if dtype is None:
+      if isinstance(initializer, Iterable):
         values = tuple(initializer)
-        dtype = type(values[0])
-      else:
-        dtype = cls._dtype
+        if len(values):
+          dtype = type(values[0])
+    if dtype is None:
+      raise ValueError("data type not specified nor can it be inferred")
     if dtype not in D2ATYPES:
-      raise ValueError("unsupported item type {:s}".format(dtype.__name__))
-    self = super().__new__(cls, D2ATYPES[dtype], values)
+      raise ValueError("unsupported data type {:s}".format(dtype.__name__))
+    if isinstance(initializer, Number):
+      dlength = initializer
+      self = super().__new__(cls, D2ATYPES[dtype], zrange(dlength))
+    else:
+      self = super().__new__(cls, D2ATYPES[dtype], values)
     self._dtype = dtype
+    self._dlength = dlength
     return self
   
   def __repr__(self):
-    return "{:s}([{:s}], dtype={:s})".format \
-        ( self.__class__.__name__
-        , ', '.join(repr(c) for c in self)
-        , self._dtype.__name__)
+    data = reprdata(self)
+    return "{:s}({:s}, dtype={:s})".format \
+        ( self.__class__.__name__, data, self._dtype.__name__)
 
 
 def createPretypedList(name, dtype, bases=(), *amixins, **kwmixins):
@@ -94,5 +151,6 @@ def createPretypedList(name, dtype, bases=(), *amixins, **kwmixins):
   cls = type(name, (TypedList,) + tuple(bases), mixins)
   cls._dtype = dtype
   return cls
+
 
 

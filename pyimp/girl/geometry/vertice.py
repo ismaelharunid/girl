@@ -21,9 +21,7 @@ class Vertice(TypedList):
     n = self.n_columns
     return "{:s}([{:s}], n_columns={:d}, dtype={:s})".format \
         ( self.__class__.__name__
-        , ','.join(('' if i%n or not i else ' ')+repr(self[i]) \
-        for i in range(len(self))) \
-        , self.n_columns, self._dtype.__name__)
+        , reprdata(self, n_columns=self.n_columns), self.n_columns, self._dtype.__name__)
   
   def transpose(self):
     return self.__class__((self[j+i*self.n_columns] \

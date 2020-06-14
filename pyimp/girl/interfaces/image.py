@@ -24,6 +24,7 @@ class Image(PixelMap):
   
   def __new__(cls, size, mode, bpp, cpp, tilesize
       , offset=(0,0)):
+    print("Image")
     self = super(Image, cls).__new__(cls, size, stride, bpp, cpp)
     self._mode      = mode
     self._offset    = offset

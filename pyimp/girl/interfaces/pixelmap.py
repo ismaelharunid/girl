@@ -6,29 +6,42 @@ class PixelMap(object):
   girl.PixelMap class interface.
   """
   
-  _bpp            = None    # bytes per pixel
+  _bpc            = None    # bytes per channel
   _cpp            = None    # channels per pixel
   _size           = None    # 2-tuple (pixel width and height)
   _columnstride   = None    # number of bytes to the next column
   _rowstride      = None    # number of bytes to the next row
-  _pixelstride    = None    # number of bytes to the next pixel
   _channelstride  = None    # number of bytes to the next channel
   
-  def __new__(cls, size, bpp, cpp, columnstride, rowstride
-      , pixelstride, channelstride):
-    self = super(Image, cls).__new__(cls)
+  def __init__(self, size, cpp, bpc
+      , columnstride, rowstride, channelstride):
+    print('PixelMap#__init__')
     self._size          = size
-    self._bpp           = bpp
-    self._cpp           = channels
+    self._cpp           = cpp
+    self._bpc           = bpc
     self._columnstride  = columnstride
     self._rowstride     = rowstride
-    self._pixelstride   = pixelstride
     self._channelstride = channelstride
-    return self
+
+  @property
+  def columnstride(self):
+    return self._columnstride
+  
+  @property
+  def rowstride(self):
+    return self._rowstride
+  
+  @property
+  def channelstride(self):
+    return self._channelstride
+  
+  @property
+  def bpc(self):
+    return self._bpc
   
   @property
   def bpp(self):
-    return self._bpp
+    return self._bpc * self._cpp
   
   @property
   def cpp(self):
