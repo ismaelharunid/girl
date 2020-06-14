@@ -17,5 +17,5 @@ TODO:
 * File export and inport
 * PixelMap display
 * Animation frame Ops
-* Animation Display
-
+* Animation display
+* girl logo
