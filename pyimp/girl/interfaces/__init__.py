@@ -9,4 +9,3 @@ from .renderable import Renderable
 from .resizable import Resizable
 from .tile import Tile
 
-
