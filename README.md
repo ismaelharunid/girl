@@ -7,7 +7,8 @@ TODO:
 * Drawing Ops
 * Vertice Ops
 * Masking Ops
-* fill Ops
+* Fill Ops
+* Outline / Offset Ops
 * Clipping Ops
 * Documentation and Reference Guide
 * 3D Rendering
